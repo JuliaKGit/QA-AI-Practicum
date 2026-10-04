@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+*.pyc
+playwright/.auth/
+.test-artifacts/
+test-results/
+playwright-report/
+blob-report/
+.env
+.playwright-mcp/
+.playwright-cli/
+.DS_Store

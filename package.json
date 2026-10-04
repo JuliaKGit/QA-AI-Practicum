@@ -1,0 +1,28 @@
+{
+  "name": "qa-ai-practicum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuliaKGit/QA-AI-Practicum.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JuliaKGit/QA-AI-Practicum/issues"
+  },
+  "homepage": "https://github.com/JuliaKGit/QA-AI-Practicum#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "dotenv": "^18.0.5"
+  }
+}
