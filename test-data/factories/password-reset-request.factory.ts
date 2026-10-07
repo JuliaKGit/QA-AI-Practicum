@@ -6,6 +6,11 @@ export type PasswordResetRequestPayload = {
   email: string;
 };
 
+/** Story example email for AC3 (valid format, not registered). */
+export function buildAc3UnregisteredPasswordResetRequest(): PasswordResetRequestPayload {
+  return { email: 'nobody@example.com' };
+}
+
 /** Unique syntactically valid email for an unregistered reset request (AC3-style). */
 export function buildUnregisteredPasswordResetRequest(): PasswordResetRequestPayload {
   return {

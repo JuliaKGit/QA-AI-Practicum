@@ -41,7 +41,7 @@ Non-negotiables for every task. Details and examples: `playwright-conventions.md
 
 ## Index
 
-**Skills** (`.agents/skills/`): *(updated as each artifact is added)*
+**Skills** (`.cursor/skills/`): `jira-ticket-analyzer` — Jira AC → Gherkin in `features/<ticket-key>.feature.md`
 
 **Agents** (`.cursor/agents/`): *(updated as each artifact is added)*
 
