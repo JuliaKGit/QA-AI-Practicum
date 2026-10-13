@@ -1,3 +1,6 @@
+<!-- Jira: AQPBT-7 https://legionqaschool.atlassian.net/browse/AQPBT-7 -->
+<!-- Confluence: https://legionqaschool.atlassian.net/wiki/spaces/AQPBT/pages/314736662 -->
+
 Feature: Forgot password (request reset link): request a one-time reset link by email
   As a registered parent who is logged out
   I want to request a password reset link using my email
