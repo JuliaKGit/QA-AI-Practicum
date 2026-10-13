@@ -16,6 +16,8 @@ export class ProfilePage {
   readonly saveFamilyDetailsButton: Locator;
   readonly privacySettingsButton: Locator;
   readonly notificationsSettingsButton: Locator;
+  readonly calendarSyncButton: Locator;
+  readonly calendarLinksShippingToast: Locator;
   readonly profileLogOutButton: Locator;
   readonly privacyPolicyLink: Locator;
   readonly changeAvatarButtons: Locator;
@@ -44,6 +46,12 @@ export class ProfilePage {
     this.notificationsSettingsButton = page.getByRole('button', {
       name: /Notifications/,
     });
+    this.calendarSyncButton = page.getByRole('button', {
+      name: /Calendar Sync/,
+    });
+    this.calendarLinksShippingToast = page.getByRole('status').filter({
+      hasText: 'Calendar links ship with playdates 🗓️',
+    });
     this.profileLogOutButton = page
       .getByRole('button', { name: 'Log out' })
       .last();
@@ -61,5 +69,13 @@ export class ProfilePage {
   /** Opens privacy policy in a new navigation. */
   async openPrivacyPolicy(): Promise<void> {
     await this.privacyPolicyLink.click();
+  }
+
+  /**
+   * Clicks Calendar Sync (subtitle: Add-to-calendar links soon).
+   * Stays on profile and surfaces the shipping toast.
+   */
+  async openCalendarSync(): Promise<void> {
+    await this.calendarSyncButton.click();
   }
 }
