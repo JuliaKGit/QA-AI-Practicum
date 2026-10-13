@@ -7,9 +7,9 @@ on:
 
 jobs:
   test:
-    name: ${{ github.event_name == 'push' && 'sanity' || github.event_name == 'pull_request' && 'smoke' || 'regression' }}
+    name: ${{ github.event_name == 'pull_request' && 'smoke' || 'regression' }}
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && 60 || 30 }}
+    timeout-minutes: ${{ github.event_name == 'pull_request' && 30 || 60 }}
     env:
       APP_URL: ${{ secrets.APP_URL }}
       APP_USER_EMAIL: ${{ secrets.APP_USER_EMAIL }}
@@ -36,15 +36,11 @@ jobs:
         id: slice
         run: |
           case "${{ github.event_name }}" in
-            push)
-              echo "command=npm run test:sanity" >> "$GITHUB_OUTPUT"
-              echo "artifact=playwright-report-sanity" >> "$GITHUB_OUTPUT"
-              ;;
             pull_request)
               echo "command=npm run test:smoke" >> "$GITHUB_OUTPUT"
               echo "artifact=playwright-report-smoke" >> "$GITHUB_OUTPUT"
               ;;
-            workflow_dispatch)
+            push|workflow_dispatch)
               echo "command=npx playwright test" >> "$GITHUB_OUTPUT"
               echo "artifact=playwright-report-regression" >> "$GITHUB_OUTPUT"
               ;;
