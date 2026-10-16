@@ -1,0 +1,41 @@
+{
+  "test": {
+    "file": "tests/target.spec.ts",
+    "title": "fixture case"
+  },
+  "items": [
+    {
+      "id": "R1",
+      "kind": "failure",
+      "artifact": "tests/target.spec.ts",
+      "line": 8,
+      "excerpt": "expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "R2",
+      "kind": "test_location",
+      "artifact": "tests/target.spec.ts",
+      "line": 4,
+      "excerpt": "test_location anchor for evidence"
+    },
+    {
+      "id": "R4",
+      "kind": "rerun",
+      "artifact": "tests/target.spec.ts"
+    },
+    {
+      "id": "B1",
+      "kind": "ac_contradiction",
+      "artifact": "features/story.feature.md",
+      "line": 2,
+      "excerpt": "AC requires confirmation text missing"
+    },
+    {
+      "id": "B3",
+      "kind": "control_present",
+      "artifact": "tests/target.spec.ts",
+      "line": 10,
+      "excerpt": "button Log in still visible on error"
+    }
+  ]
+}

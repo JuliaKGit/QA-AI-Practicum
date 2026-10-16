@@ -5,7 +5,7 @@ description: Repairs drifted Playwright locators after a UI change — patch the
 
 # Self-heal (locator drift)
 
-- Prerequisite: a completed triage diagnosis classified test issue (drift). If it is a real app bug, missing, or ambiguous → stop and route to bug-reporter.
+- Prerequisite: `npx tsx scripts/score-evidence.ts --verify-only .test-artifacts/evidence/current.json` returns `decision: act` with `side: drift`, or `decision: escalate` with human `.test-artifacts/approvals/<decisionId>.json`. Otherwise stop (hooks enforce).
 - Steps:
   1. From the error and trace, find the failing test, the assertion line (read-only), the POM property that supplied the locator, and the old locator exactly as written.
   2. Re-discover the element with browser_navigate + browser_snapshot against APP_URL: same role, current accessible name. Never guess from screenshots.

@@ -1,0 +1,24 @@
+{
+  "suites": [
+    {
+      "specs": [
+        {
+          "tests": [
+            {
+              "results": [
+                {
+                  "status": "failed",
+                  "errors": [
+                    {
+                      "message": "expect(locator).toBeVisible() failed\n    at fixture"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

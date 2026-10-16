@@ -1,0 +1,55 @@
+{
+  "test": {
+    "file": "tests/target.spec.ts",
+    "title": "fixture case"
+  },
+  "items": [
+    {
+      "id": "R1",
+      "kind": "failure",
+      "artifact": "tests/target.spec.ts",
+      "line": 8,
+      "excerpt": "expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "R2",
+      "kind": "test_location",
+      "artifact": "tests/target.spec.ts",
+      "line": 4,
+      "excerpt": "test_location anchor for evidence"
+    },
+    {
+      "id": "R3",
+      "kind": "pom_location",
+      "artifact": "pages/widget.page.ts",
+      "line": 2,
+      "excerpt": "getByRole('button', { name: 'Send reset link' })"
+    },
+    {
+      "id": "R4",
+      "kind": "rerun",
+      "artifact": "tests/target.spec.ts"
+    },
+    {
+      "id": "N",
+      "kind": "oracle_neutral",
+      "artifact": "features/neutral.md",
+      "line": 1,
+      "excerpt": "neutral note for triage only"
+    },
+    {
+      "id": "D2",
+      "kind": "pom_changed",
+      "artifact": "pages/widget.page.ts",
+      "line": 4,
+      "excerpt": "pom drift: sendResetLink renamed to submitReset"
+    },
+    {
+      "id": "D3",
+      "kind": "locator_error",
+      "artifact": "tests/target.spec.ts",
+      "line": 9,
+      "excerpt": "strict mode violation: locator resolved"
+    }
+  ]
+}

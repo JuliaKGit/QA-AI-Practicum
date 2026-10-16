@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 playwright/.auth/
 .test-artifacts/
+!scripts/evidence-fixtures/**/.test-artifacts/
+!scripts/evidence-fixtures/**/.test-artifacts/**
 test-results/
 playwright-report/
 blob-report/

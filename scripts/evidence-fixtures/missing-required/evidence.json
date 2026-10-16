@@ -1,0 +1,43 @@
+{
+  "test": {
+    "file": "tests/target.spec.ts",
+    "title": "fixture case"
+  },
+  "items": [
+    {
+      "id": "R1",
+      "kind": "failure",
+      "artifact": "tests/target.spec.ts",
+      "line": 8,
+      "excerpt": "expect(locator).toBeVisible() failed"
+    },
+    {
+      "id": "R2",
+      "kind": "test_location",
+      "artifact": "tests/target.spec.ts",
+      "line": 4,
+      "excerpt": "test_location anchor for evidence"
+    },
+    {
+      "id": "R3",
+      "kind": "pom_location",
+      "artifact": "pages/widget.page.ts",
+      "line": 2,
+      "excerpt": "getByRole('button', { name: 'Send reset link' })"
+    },
+    {
+      "id": "D1",
+      "kind": "snapshot_mismatch",
+      "artifact": "pages/widget.page.ts",
+      "line": 3,
+      "excerpt": "snapshot mismatch on reset heading text drift"
+    },
+    {
+      "id": "D4",
+      "kind": "probe_unique",
+      "artifact": "pages/widget.page.ts",
+      "line": 5,
+      "excerpt": "probe unique token xyz789 for drift oracle"
+    }
+  ]
+}

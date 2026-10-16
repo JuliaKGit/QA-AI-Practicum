@@ -1,6 +1,31 @@
 {
   "version": 1,
   "hooks": {
+    "preToolUse": [
+      {
+        "command": "node .cursor/hooks/run-gate.mjs guard-approvals.py",
+        "matcher": "Write",
+        "failClosed": true
+      },
+      {
+        "command": "node .cursor/hooks/run-gate.mjs guard-heal-gate.py",
+        "matcher": "Write",
+        "failClosed": true
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": "node .cursor/hooks/run-gate.mjs guard-pr-gate.py",
+        "matcher": "gh pr create",
+        "failClosed": true
+      }
+    ],
+    "beforeMCPExecution": [
+      {
+        "command": "node .cursor/hooks/run-gate.mjs guard-jira-bug-gate.py",
+        "failClosed": true
+      }
+    ],
     "afterFileEdit": [
       {
         "command": ".cursor/hooks/guard-test-assertions.sh",

@@ -10,6 +10,6 @@ description: Analyzes Playwright test failures, identifies root cause, and creat
 3. Identify the root cause from the spec, the page object, and the app's behavior (BuddyTime's source is not available to us — describe the behavior precisely).
 4. Search Jira project JIRA_PROJECT_KEY (AQPBT) for a similar open bug before drafting a new one.
 5. Draft: Title (specific), Type Bug, Severity, Priority, Steps to reproduce (numbered, from login, naming which family does what), Expected (from the AC or the Confluence page), Actual, Environment (the APP_URL host, browser, account role — never an email or password), Evidence (screenshot and trace paths), the exact Playwright error, Linked story (AQPBT-N).
-6. Show the draft to the human. File it with the Atlassian MCP only after approval, and link it to the originating story.
+6. Show the draft to the human. File with Atlassian MCP `createJiraIssue` (`issueType`: **Bug**) only when the scorer allows; hook re-runs score-evidence on `current.json`.
 
-Rules: never file for a test issue or a green run; never include credentials.
+Rules: never file on a green run; never include credentials; never when the scorer blocks filing.

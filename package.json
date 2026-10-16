@@ -10,7 +10,8 @@
     "test:regression": "playwright test --grep '@regression'",
     "test:api": "playwright test --grep '@api'",
     "test:e2e": "playwright test --grep '@e2e'",
-    "test:destructive": "playwright test --grep '@destructive' --workers=1"
+    "test:destructive": "playwright test --grep '@destructive' --workers=1",
+    "test:evidence": "tsx --test scripts/score-evidence.test.ts"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,10 @@
   },
   "homepage": "https://github.com/JuliaKGit/QA-AI-Practicum#readme",
   "devDependencies": {
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
   },
   "dependencies": {
     "@faker-js/faker": "^10.6.0",
