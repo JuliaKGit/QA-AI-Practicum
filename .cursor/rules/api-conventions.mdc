@@ -1,0 +1,127 @@
+---
+description: Conventions for API tests in api/ — sources of truth, safe auth, a success and an intentional error test per endpoint, evidence labels.
+globs: api/**
+alwaysApply: false
+---
+
+# API test conventions
+
+## 1. Sources of truth
+
+A **specification or approved doc** is documented; a row in `api/CATALOG.md` is **observed**; anything else is an **assumption** and belongs under **Not yet tested**. Tests from observed rows are **characterization** tests (pin today’s behavior); tests from a spec are **contract** tests.
+
+✅ **Good** — constants and shapes trace to a catalog row marked `executed`:
+
+```typescript
+/** Values recorded in api/CATALOG.md (2026-10-16 API test pass). */
+export const CATALOG_GET_AUTH_STATUS = 200;
+// … expectMeResponse asserts fields listed for GET /api/v1/me in CATALOG.md
+```
+
+❌ **Bad** — exercise a route with no catalog row and no spec citation; leave it listed instead:
+
+```markdown
+## Not yet tested
+- **Write endpoints not hit on this pass** — … playdate propose/respond/cancel …
+```
+
+## 2. Requests
+
+Base URL comes from Playwright `baseURL` (`APP_URL`). Authenticated and anonymous contexts only from `api/fixtures.ts` (`mainApi`, `altApi`, `anonApi`), which reuse `support/api-client.ts`. Never a token, full URL, or hardcoded id in a spec.
+
+✅ **Good** — `me.api.spec.ts`:
+
+```typescript
+const PATH = '/api/v1/me';
+
+test('GET /api/v1/me returns catalog status, content type, and shape @api', async ({ mainApi }) => {
+  const response = await mainApi.get(PATH);
+```
+
+❌ **Bad** — bypass fixtures and embed secrets or origins:
+
+```typescript
+const response = await request.get('https://test.buddytime.ca/api/v1/me', {
+  headers: { Authorization: 'Bearer eyJ…' },
+});
+```
+
+## 3. Two tests per endpoint
+
+Per endpoint: one **success** test and one **intentional error** test that changes **exactly one** thing (drop token, omit a required field, empty body). Assert status and fields you actually expect; ensure nothing sensitive leaks in the body.
+
+✅ **Good** — `availability.api.spec.ts` pair; anon case only removes auth via `anonApi`:
+
+```typescript
+test('GET /api/v1/availability returns catalog status, content type, and shape @api', async ({ mainApi }) => { … });
+test('GET /api/v1/availability without token returns catalog status @api', async ({ anonApi }) => {
+  await expectCatalogUnauthenticatedGet(anonApi, PATH);
+});
+```
+
+❌ **Bad** — one test, two failures at once, or guessing status/shape not in catalog:
+
+```typescript
+test('GET /api/v1/availability errors @api', async ({ anonApi }) => {
+  const response = await anonApi.get(PATH, { headers: { Accept: 'text/plain' } });
+  expect(response.status()).toBe(403);
+  expect(await response.text()).toContain('bt_token');
+});
+```
+
+## 4. Writes
+
+Write only when **undo is documented or observed** (catalog row + known DELETE/status). Call `trackRecord` immediately after create so cleanup runs even if the test fails later.
+
+✅ **Good** — `children.api.spec.ts` after `POST /api/v1/children` (catalog: 201 + `DELETE` 204):
+
+```typescript
+const createResponse = await mainApi.post(CHILDREN_PATH, { data: payload });
+expect(createResponse.status()).toBe(CATALOG_CREATE_STATUS);
+const createdRecord = created as { id: string };
+trackRecord({ type: 'child', id: createdRecord.id, owner: recordOwner });
+```
+
+❌ **Bad** — create without tracking or without a catalog-backed delete path:
+
+```typescript
+await mainApi.post('/api/v1/children', { data: payload });
+// no trackRecord; no documented DELETE cleanup
+```
+
+## 5. Tags
+
+Exactly **one** tag per test: `@api`. Not on `describe()`.
+
+✅ **Good**:
+
+```typescript
+test('GET /api/v1/me without token returns catalog status @api', async ({ anonApi }) => {
+```
+
+❌ **Bad**:
+
+```typescript
+test('GET /api/v1/me @smoke @api', async ({ mainApi }) => {
+```
+
+## 6. Evidence
+
+Label every claim **executed**, **inspected only**, or **not yet tested**. A status or body copied from a spec, chat, or agent prediction is **not** evidence until observed or run.
+
+✅ **Good** — catalog table and helper comment:
+
+```markdown
+| GET | `/api/v1/me` | … | 200 | … | yes | executed |
+```
+
+```typescript
+/** Values recorded in api/CATALOG.md (2026-10-16 API test pass). */
+```
+
+❌ **Bad** — assert or document without a label:
+
+```typescript
+// OpenAPI says 404 when community missing — not run yet
+expect(response.status()).toBe(404);
+```

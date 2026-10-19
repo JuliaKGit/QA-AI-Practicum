@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Playwright constitution
 
-Non-negotiables for every task. Details and examples: `playwright-conventions.mdc` (tests) and `qa-orchestrator.mdc` (ticket/CI workflow).
+Non-negotiables for every task. Details and examples: `playwright-conventions.mdc` (tests), `api-conventions.mdc` (API tests), and `qa-orchestrator.mdc` (ticket/CI workflow).
 
 ## MUST
 
@@ -41,9 +41,11 @@ Non-negotiables for every task. Details and examples: `playwright-conventions.md
 
 ## Index
 
-**Skills** (`.cursor/skills/`): `api-cleanup` — tracked record teardown; `ci-failure-triage` — red CI diagnosis; `eval-report` — reliability metrics; `exploratory-charter` — session charter format; `explore-and-generate` — coverage gap discovery; `jira-bug-reporter` — Jira bug draft; `jira-ticket-analyzer` — AC to Gherkin; `pom-conventions` — page object rules; `self-heal` — locator drift repair; `test-data-reset` — manual tracker cleanup
+**Rules** (`.cursor/rules/`): `playwright-conventions.mdc` — UI specs; `api-conventions.mdc` — API specs in `api/`; `qa-orchestrator.mdc` — ticket/CI routing
 
-**Agents** (`.cursor/agents/`): `bug-reporter` — file confirmed bugs; `test-writer` — plan to spec; `triage` — classify failures
+**Skills** (`.cursor/skills/`): `api-cleanup` — tracked record teardown; `api-contract-tests` — API specs from spec or catalog; `api-discovery` — catalog from network traffic; `ci-failure-triage` — red CI diagnosis; `eval-report` — reliability metrics; `exploratory-charter` — session charter format; `explore-and-generate` — coverage gap discovery; `jira-bug-reporter` — Jira bug draft; `jira-ticket-analyzer` — AC to Gherkin; `pom-conventions` — page object rules; `self-heal` — locator drift repair; `test-data-reset` — manual tracker cleanup
+
+**Agents** (`.cursor/agents/`): `api-test-writer` — endpoint plan to `api/` specs; `bug-reporter` — file confirmed bugs; `test-writer` — plan to spec; `triage` — classify failures
 
 ## Agent governance
 

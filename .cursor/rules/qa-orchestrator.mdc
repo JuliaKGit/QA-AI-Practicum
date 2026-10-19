@@ -27,20 +27,42 @@ At most 3 delegations per task (excluding heal retries); never re-run an identic
 
 ## Tools
 
-Atlassian MCP (Jira and Confluence), GitHub MCP or `gh`, the terminal (`npx playwright test`), the `test-writer` / `triage` / `bug-reporter` subagents.
+Atlassian MCP (Jira and Confluence), GitHub MCP or `gh`, the terminal (`npx playwright test`), the subagents below.
 
 ## Skills
 
-`jira-ticket-analyzer` (analyze), `explore-and-generate` (ticket-less discovery), `ci-failure-triage` (via triage), `self-heal` (drift only), `jira-bug-reporter` (via bug-reporter), `api-cleanup`, `pom-conventions`, `eval-report` (mandatory before Done when triggered).
+| Skill | Role |
+|-------|------|
+| `jira-ticket-analyzer` | analyze ticket → Gherkin plan |
+| `explore-and-generate` | ticket-less UI discovery |
+| `api-discovery` | map API traffic → `api/CATALOG.md` |
+| `api-contract-tests` | plan/write API tests from spec or catalog |
+| `ci-failure-triage` | red CI diagnosis (via triage) |
+| `self-heal` | locator drift repair (UI only) |
+| `jira-bug-reporter` | Jira bug draft (via bug-reporter) |
+| `api-cleanup` | tracked record teardown |
+| `pom-conventions` | page object rules |
+| `eval-report` | mandatory before Done when triggered |
+
+## Subagents
+
+| Subagent | Role |
+|----------|------|
+| `api-test-writer` | API endpoint plan → specs under `api/` |
+| `test-writer` | page plan → specs under `tests/` |
+| `triage` | classify failures |
+| `bug-reporter` | file confirmed bugs |
 
 ## Routing
 
-- **Ticket** → analyze → plan saved to `features/<key>.feature.md` → test-writer → run → if red, Heal on red.
-- **No ticket** → explore-and-generate → plan saved to `features/explore-<slug>.feature.md` → test-writer.
+- **API endpoint only** (no page in AC) → `api-contract-tests` plans from the spec or `api/CATALOG.md` → `api-test-writer` → `npx playwright test --project=api` → if red, Heal on red.
+- **Page flow** → analyze → plan saved to `features/<key>.feature.md` → `test-writer` → run → if red, Heal on red.
+- **Both** → API path first, then page path.
+- **No ticket** → explore-and-generate → plan saved to `features/explore-<slug>.feature.md` → `test-writer`.
 
 ## Heal on red
 
-Always triage first. Real app bug → bug-reporter, never heal. Drift → self-heal (re-discover via the accessibility snapshot, patch the POM only, re-run green with assertions unchanged, repair PR `heal/<desc>`, never merge). Ambiguous → stop and escalate.
+Always triage first. P36's evidence score (`scripts/score-evidence.ts` on `.test-artifacts/evidence/current.json` plus hooks) applies to API failures too. Real app bug → bug-reporter, never heal. UI drift → self-heal (re-discover via the accessibility snapshot, patch the POM only, re-run green with assertions unchanged, repair PR `heal/<desc>`, never merge). An API failure has no page object to heal, so the drift side can't reach `act` — a changed status or field goes to triage as evidence for a contract change or a bug, never to self-heal. Ambiguous → stop and escalate.
 
 Hard stops: never touch an assertion (the guard hooks enforce it); stop if green needs an assertion change or the same locator error persists.
 
@@ -48,7 +70,7 @@ Hard stops: never touch an assertion (the guard hooks enforce it); stop if green
 
 The outer runner (a Cursor Automation, a headless agent `-p`, or a local batch) queries Jira project `JIRA_PROJECT_KEY` (`AQPBT`) for status **In QA** without the label `tests-generated` and passes **at most one** ticket per run; empty queue → no run.
 
-Per ticket: analyze → test-writer → run → heal on red.
+Per ticket: route per **Routing** (API-first when both) → run → heal on red.
 
 Output: one PR per ticket, the ticket linked in the PR body, label `tests-generated` on the ticket; never merge, transition, or close.
 
