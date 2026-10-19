@@ -38,7 +38,7 @@ function bearerTokenFromStorageState(storageStatePath: string): string | undefin
  * Playwright API context for one family (main or alt), using auth storage state.
  * Adds `Authorization: Bearer` when `bt_token` is present in storage state localStorage.
  */
-export async function createFamilyApiContext(
+export async function createApiContextForOwner(
   owner: RecordOwner,
 ): Promise<APIRequestContext> {
   const baseURL = process.env.APP_URL;
@@ -58,6 +58,18 @@ export async function createFamilyApiContext(
     storageState,
     extraHTTPHeaders,
   });
+}
+
+/** @deprecated use createApiContextForOwner */
+export const createFamilyApiContext = createApiContextForOwner;
+
+/** API context with no auth headers or storage state. */
+export async function createUnauthenticatedApiContext(): Promise<APIRequestContext> {
+  const baseURL = process.env.APP_URL;
+  if (!baseURL) {
+    throw new Error('APP_URL must be set in the environment');
+  }
+  return request.newContext({ baseURL });
 }
 
 /** DELETE /api/v1/children/:id — matches dashboard remove-child API. */
