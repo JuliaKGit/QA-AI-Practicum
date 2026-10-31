@@ -42,10 +42,10 @@ export class DashboardPage {
 
   /** One child row in the family block (avatar control + summary + remove). */
   private childRows(familyName: string): Locator {
-    return this.familyBlock(familyName).locator('div').filter({
-      has: this.page.getByRole('button', { name: 'Change avatar' }),
-      has: this.page.getByRole('button', { name: 'remove' }),
-    });
+    return this.familyBlock(familyName)
+      .locator('div')
+      .filter({ has: this.page.getByRole('button', { name: 'Change avatar' }) })
+      .filter({ has: this.page.getByRole('button', { name: 'remove' }) });
   }
 
   /** Row container for one child, located by summary text within the family block. */
