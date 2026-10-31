@@ -19,6 +19,25 @@ On Dashboard only: created one child (`POST /api/v1/children`) and removed it (`
 | POST | `/api/v1/children` | Dashboard | Bearer `bt_token` | 201 | application/json | `firstName`, `birthYear`, `birthMonth`, `gender`, `interests` (array) | `{ id: string; firstName: string; birthYear: number; birthMonth: number; age: number; gender: string; interests: array; avatarKey: string \| null }` | yes (paired with DELETE) | executed |
 | DELETE | `/api/v1/children/{id}` | Dashboard | Bearer `bt_token` | 204 | (empty) | — | empty body | yes | executed |
 
+## Authorization (two families)
+
+Recorded **2026-10-31** via `api/authorization.api.spec.ts` (`mainApi` = main test family, `altApi` = second family from `playwright/.auth/alt-user.json`, `anonApi` = no token). Disposable children created with `POST /api/v1/children` as main (201), `trackRecord` + teardown `DELETE` as owner.
+
+### Executed
+
+| call | auth | status seen | what it showed |
+|------|------|-------------|----------------|
+| `DELETE /api/v1/children/{id}` | alt family token; `{id}` created under main family | **400** | Not 2xx; child id still present on main `GET /api/v1/me` (200); absent from alt `GET /api/v1/me` (200) |
+| `DELETE /api/v1/children/{id}` | no token; `{id}` created under main family | **401** | Not 2xx; child id still present on main `GET /api/v1/me` (200) |
+
+### Not yet tested
+
+- **Cross-family DELETE response body** — 400/401 bodies not characterized (shape, message fields).
+- **Cross-family DELETE as 403 vs 404** — only 400 (alt) and 401 (anon) observed for these cases.
+- **Alt family `GET /api/v1/me` shape when `family` is null** — 200 returned; full schema for incomplete alt accounts not cataloged here.
+- **Expired or wrong-family token on DELETE** — not exercised.
+- **Cross-family access on other routes** (playdates, availability writes, etc.) — not exercised in this pass.
+
 ## Not yet tested
 
 - **Pagination / filtering** — all list endpoints returned a single unpaginated JSON array; query params (if any) were not exercised.
